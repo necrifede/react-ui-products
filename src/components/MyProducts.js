@@ -8,16 +8,20 @@ import Navigation from './Navigation'
 
 const MyProducts = (props) => {
   const [products, setProducts] = useState([])
-  if (!isUserLogged())(
-    navigate('/login')
-  )
+  if (!isUserLogged()) navigate('/login')
   // let products = []
   useEffect(() => {
     async function getMyProducts() {
       // TODO: control error when request
       const { data, status } = await Axios.get('api/products')
-      // return data.products
-      setProducts(data.products.filter(({ user = { _id: 0 } }) => user._id === getUserId()))
+      setProducts(
+        data.products.filter(({ user }) => {
+          if (!user) {
+            return false
+          }
+          return user._id === getUserId()
+        })
+      )
     }
     getMyProducts()
   }, [])

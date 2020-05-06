@@ -19,7 +19,7 @@ const CreateProduct = (props) => {
       <h1>Create Product</h1>
       <Navigation />
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ name: '', price: 0, description: '' }}
         validate={(values) => {
           const errors = {}
           // if (!values.email) {
@@ -31,15 +31,18 @@ const CreateProduct = (props) => {
         }}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const { data, status } = await Axios.post('http://localhost:3030/api/signin', values, {
-              headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+            const { data, status } = await Axios.post('api/products', values, {
+              headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                authorization: localStorage.getItem('token'),
+              },
             })
             if (status >= 400) {
               throw Error(data)
             }
             // TODO: why bearer
-            localStorage.setItem('token', `Bearer ${data.token}`)
-            navigate('/')
+            // localStorage.setItem('token', `Bearer ${data.token}`)
+            navigate('/products')
           } catch (err) {
             console.log('error: ', err)
           } finally {
@@ -59,23 +62,34 @@ const CreateProduct = (props) => {
         }) => (
           <form onSubmit={handleSubmit}>
             <input
-              type='name'
+              type='text'
               name='name'
+              placeholder='Name'
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.name}
             />
             {errors.name && touched.name && errors.name}
             <input
-              type='password'
-              name='password'
+              type='number'
+              name='price'
+              placeholder='Price'
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.password}
+              value={values.price}
             />
-            {errors.password && touched.password && errors.password}
+            {errors.price && touched.price && errors.price}
+            <textarea
+              type='text'
+              name='description'
+              placeholder='Description'
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.description}
+            />
+            {errors.description && touched.description && errors.description}
             <button type='submit' disabled={isSubmitting}>
-              Submit
+              Create Product
             </button>
           </form>
         )}
