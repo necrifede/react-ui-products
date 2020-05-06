@@ -14,7 +14,7 @@ export const getUser = () => {
   return { id, name }
 }
 
-export const getUserId = () => getUser().id
-export const getUserName = () => getUser().name
+export const getUserId = () => isUserLogged() ? getUser().id : undefined
+export const getUserName = () => isUserLogged() ? getUser().name : undefined
 export const isUserLogged = () => !!getUser()
 export const logOut = () => localStorage.removeItem('token')
