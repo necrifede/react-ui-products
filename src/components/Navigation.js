@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
-import PropTypes from 'prop-types'
-import { Router, Link } from '@reach/router'
+// import PropTypes from 'prop-types'
+// Router
+import { Link } from '@reach/router'
 
 import { isUserLogged, logOut, getUser } from '../utils'
 
@@ -11,7 +12,7 @@ const Navigation = (props) => {
     getProps: ({ isCurrent }) => (isCurrent ? { className: 'nav-link active' } : {}),
   }
   return (
-    <nav className='navbar navbar-light bg- bg-light'>
+    <nav className='navbar navbar-light bg- bg-light mb-4'>
       <ul className='nav nav-tabs'>
         <li className='nav-item'>
           <Link className='nav-link' {...linkProps} to='/'>

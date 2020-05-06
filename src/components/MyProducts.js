@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import ProductList from './ProductList'
 import Axios from 'axios'
 import { getUserId, isUserLogged } from '../utils'
@@ -13,7 +13,7 @@ const MyProducts = (props) => {
   useEffect(() => {
     async function getMyProducts() {
       // TODO: control error when request
-      const { data, status } = await Axios.get('api/products')
+      const { data } = await Axios.get('api/products')
       setProducts(
         data.products.filter(({ user }) => {
           if (!user) {
@@ -28,7 +28,7 @@ const MyProducts = (props) => {
   console.log('products: ', products)
   return (
     <div>
-      <h1>My Products</h1>
+      <h1 className='pt-3 pb-1'>My Products</h1>
       <Navigation />
       <ProductList products={products} />
     </div>

@@ -1,8 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
+import { navigate } from '@reach/router'
 import { server } from '../config'
 
-const Products = ({ name, picture, price, description, user = { displayName: 'Unknown' } }) => {
+const Products = ({
+  _id,
+  name,
+  picture,
+  price,
+  description,
+  user = { displayName: 'Unknown' },
+}) => {
+  const state = { name, picture, price, description, user }
+  console.log('state; ', state)
   return (
     <div className='card bg-light mb-3'>
       <h4 className='card-header'>{name}</h4>
@@ -12,8 +22,16 @@ const Products = ({ name, picture, price, description, user = { displayName: 'Un
         {price}
       </p>
       <p className='card-text'>{description}</p>
+      <small className='text-muted'>Owner: {user ? user.displayName : 'Unknown'}</small>
       <div className='card-footer'>
-        <small className='text-muted'>Owner: {user ? user.displayName : 'Unknown'}</small>
+        <div className='text-center pb-1'>
+          <button
+            className='btn btn-info btn-sm'
+            onClick={() => navigate(`/products/${_id}`, { state })}
+          >
+            Details
+          </button>
+        </div>
       </div>
     </div>
   )

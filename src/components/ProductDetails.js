@@ -1,25 +1,30 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
 import Navigation from './Navigation'
-import { navigate } from '@reach/router'
 import { Formik } from 'formik'
 import Axios from 'axios'
+import { navigate } from '@reach/router'
 
-/**
- * name
- * picture
- * price
- * description
- * owner
- * @param {*} props
- */
-const CreateProduct = (props) => {
+// import PropTypes from 'prop-types'
+
+const ProductDetails = ({ productId, location }) => {
+  console.log('location: ', location)
+  const { name = '', picture = '', price = 0, description = '', user = {} } = location.state
+  const deleteProduct = async (event) => {
+    event.preventDefault()
+    const { data, status } = await Axios.delete(`api/products/${productId}`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    })
+    
+    navigate('/products')
+  }
   return (
     <div>
-      <h1 className='pt-3 pb-1'>Create Product</h1>
+      <h1 className='pt-3 pb-1'>Product: {productId}</h1>
       <Navigation />
       <Formik
-        initialValues={{ name: '', price: 0, description: '' }}
+        initialValues={{ name, price, description }}
         validate={(values) => {
           const errors = {}
           // if (!values.email) {
@@ -32,7 +37,7 @@ const CreateProduct = (props) => {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             // data,
-            const { status } = await Axios.post('api/products', values, {
+            const { data, status } = await Axios.put(`api/products/${productId}`, values, {
               headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
                 authorization: localStorage.getItem('token'),
@@ -41,7 +46,9 @@ const CreateProduct = (props) => {
             if (status >= 400) {
               throw Error(`status '${status}': Error when creating product`)
             }
-            navigate('/products')
+            console.log('data: ', data)
+            console.log('status: ', status)
+            // navigate('/products')
           } catch (err) {
             console.log('error: ', err)
           } finally {
@@ -102,8 +109,11 @@ const CreateProduct = (props) => {
               />
               {errors.description && touched.description && errors.description}
             </div>
-            <button type='submit' className='btn btn-info' disabled={isSubmitting}>
-              Create Product
+            <button type='submit' className='btn btn-success mr-2' disabled={isSubmitting}>
+              Save
+            </button>
+            <button className='btn btn-danger' onClick={deleteProduct}>
+              Delete
             </button>
           </form>
         )}
@@ -112,6 +122,6 @@ const CreateProduct = (props) => {
   )
 }
 
-CreateProduct.propTypes = {}
+ProductDetails.propTypes = {}
 
-export default CreateProduct
+export default ProductDetails

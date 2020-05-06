@@ -1,13 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { Formik } from 'formik'
 import axios from 'axios'
-import { Router, Link, navigate } from '@reach/router'
+// Router, Link,
+import { navigate } from '@reach/router'
 
-const Login = ({}) => {
+const Login = () => {
   return (
     <div>
-      <h1>Login</h1>
+      <h1 className='pt-3 pb-1' >Login</h1>
       <Formik
         initialValues={{ email: '', password: '' }}
         validate={(values) => {
